@@ -1,11 +1,13 @@
 package jp.techacademy.satoshi.calcapp
 
 import android.support.v7.app.AppCompatActivity
+import android.support.design.widget.Snackbar
 import android.os.Bundle
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 import android.content.Intent
 import android.util.Log
+
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -20,26 +22,32 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View) {
+        if(leftText.getText().toString().equals("") == false && rightText.getText().toString().equals("") == false){
         val intent = Intent(this, SecondActivity::class.java)
-        var cast =
-            when {
-                (v.id) == R.id.plusButton -> 1
-                (v.id) == R.id.minusButton -> 2
-                (v.id) == R.id.timesButton -> 3
-                (v.id) == R.id.divisionButton -> 4
-                else -> 5
+        var valueLeft = leftText.getText().toString().toDouble()
+        var valueRight = rightText.getText().toString().toDouble()
+        var cast: Double = 0.0
+
+        if((v.id) == R.id.plusButton) {
+            cast = valueLeft + valueRight
+        } else if((v.id) == R.id.minusButton) {
+            cast = valueLeft - valueRight
+        } else if((v.id) == R.id.timesButton) {
+            cast = valueLeft * valueRight
+        } else if((v.id) == R.id.divisionButton) {
+            cast = valueLeft / valueRight
         }
-        var valueRight = rightText.getText().toString().toBigDecimal()
-        var valueLeft = leftText.getText().toString().toBigDecimal()
 
-        intent.putExtra("cast", cast)
-        intent.putExtra("valueRight", valueRight)
-        intent.putExtra("valueLeft", valueLeft)
+        Log.d("debug",valueLeft.toString())
+        Log.d("debug",valueLeft.toString())
+        val castAns = cast.toString()
 
-        Log.d("debug1","${valueRight}")
-        Log.d("debug1","${valueLeft}")
-        Log.d("debug1","${cast}")
+        intent.putExtra("castAns", castAns)
         startActivity(intent)
+
+        } else {
+            Snackbar.make(v,"両方の入力欄に計算したい値を入力してください。", Snackbar.LENGTH_LONG).show()
+        }
 
     }
 }
